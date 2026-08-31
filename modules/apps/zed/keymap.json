@@ -1,0 +1,24 @@
+[
+  {
+    "context": "Workspace",
+    "bindings": {
+      "ctrl-b": "task::Rerun",
+      "cmd-b": "task::Rerun",
+      "ctrl-shift-b": "task::Spawn",
+      "cmd-shift-b": "task::Spawn"
+    }
+  },
+  {
+    "context": "Terminal",
+    "bindings": {
+      "ctrl-b": "terminal::RerunTask",
+      "cmd-b": "terminal::RerunTask"
+    }
+  },
+  {
+    "context": "Editor",
+    "bindings": {
+      "alt-enter": "editor::ToggleCodeActions"
+    }
+  }
+]
