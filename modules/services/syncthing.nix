@@ -1,23 +1,33 @@
+{ config, ... }:
+let
+  hm = config.flake.modules.homeManager;
+in
 {
-  flake.nixosModules.syncthing =
-    { config, lib, ... }:
-    let
-      user = config.aenix.user.name;
-      home = config.users.users.${user}.home;
-    in
-    {
-      services.syncthing = {
+  # One Syncthing per user, as a user service, so every session syncs its own folders
+  flake.modules.nixos.syncthing = {
+    networking.firewall = {
+      allowedTCPPorts = [ 22000 ];
+      allowedUDPPorts = [
+        22000
+        21027
+      ];
+    };
+    home-manager.sharedModules = [ hm.syncthing ];
+  };
+
+  # If the tray does not work: configure using the GUI then:
+  #   rm ~/.config/syncthingtray.ini
+  #   systemctl --user restart syncthingtray
+  flake.modules.homeManager.syncthing = { pkgs, ... }: {
+    services.syncthing = {
+      enable = true;
+      # Devices and folders are managed in the GUI, a rebuild must not delete them
+      overrideDevices = false;
+      overrideFolders = false;
+      tray = {
         enable = true;
-
-        user = user;
-        group = "users";
-
-        dataDir = home;
-        configDir = "${home}/.config/syncthing";
-
-        guiAddress = "127.0.0.1:8384";
-
-        openDefaultPorts = true;
+        package = pkgs.syncthingtray; # the full Qt app, needed while configuring it
       };
     };
+  };
 }
