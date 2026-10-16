@@ -1,3 +1,4 @@
+{ palette, ... }:
 {
   flake.modules.nixos.gaming = { pkgs, ... }: {
     # Steam also enables 32-bit graphics and audio
@@ -13,6 +14,9 @@
 
   flake.modules.homeManager.gaming =
     { pkgs, ... }:
+    let
+      noHashPalette = builtins.mapAttrs (_: builtins.substring 1 (-1)) palette;
+    in
     {
       home.packages = [
         # Launchers
@@ -24,20 +28,28 @@
       ];
 
       # cf. https://raw.githubusercontent.com/flightlessmango/MangoHud/master/data/MangoHud.conf
-      programs.mangohud = {
+      programs.mangohud = with noHashPalette; {
         enable = true;
         settings = {
           vsync = 1; # 0 = adaptive; 1 = off; 2 = mailbox; 3 = on
           fps_limit = 160;
           frametime = false;
           frame_timing = false;
-          cpu_stats = true;
           gpu_stats = true;
+          cpu_stats = true;
           fps = true;
-          gamemode = true;
           wine = true; # Show Proton version
+          gamemode = true;
+
           toggle_hud = "Shift_L+F12";
           no_display = true; # Hidden by default
+          round_corners = 8;
+          background_color = bg;
+          text_color = fg;
+          gpu_color = blue;
+          cpu_color = green;
+          engine_color = yellow; # FPS & Gamemode
+          wine_color = orange;
         };
       };
     };
