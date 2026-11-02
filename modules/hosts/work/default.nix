@@ -10,7 +10,7 @@ in
       base
       nix
       home-manager
-      desktop
+      kde
       syncthing
       docker
       company
@@ -19,7 +19,7 @@ in
     ];
     networking.hostName = "fnouaillat-work";
     # sched-ext scheduler: the desktop stays responsive while a test run loads every core.
-    # --autopower follows the power profile KDE sets (performance on AC, powersave on battery)
+    # --autopower follows the power profile the desktop sets (performance on AC, powersave on battery)
     services.scx = {
       enable = true;
       scheduler = "scx_lavd";

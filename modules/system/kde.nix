@@ -8,8 +8,9 @@ let
   hm = config.flake.modules.homeManager;
 in
 {
-  # Plasma on Wayland with the SDDM login screen, and the KDE apps: dropping this import drops KDE
-  flake.modules.nixos.desktop = { pkgs, ... }: {
+  # Plasma on Wayland with the SDDM login screen, the KDE apps, and what KDE adds to the other
+  # apps (browsers, file manager in the launchers): dropping this import drops KDE
+  flake.modules.nixos.kde = { pkgs, ... }: {
     services.displayManager.sddm = {
       enable = true;
       wayland.enable = true;
@@ -25,25 +26,34 @@ in
       qrca
     ];
 
-    environment.systemPackages = with pkgs; [
-      kdePackages.arianna
-      kdePackages.kamoso
-      kdePackages.kcalc
-      kdePackages.kcolorchooser
-      kdePackages.kompare # diff viewer
-      kdePackages.partitionmanager
-      kdePackages.sddm-kcm # the login screen page of the settings, see docs/how-to.md
-      kdePackages.skanlite
+    environment.systemPackages = with pkgs.kdePackages; [
+      arianna
+      kamoso
+      kcalc
+      kcolorchooser
+      kompare # diff viewer
+      partitionmanager
+      sddm-kcm # the login screen page of the settings, see docs/how-to.md
+      skanlite
     ];
-    home-manager.sharedModules = [ hm.desktop ];
+    # Added to the default applications of apps/common.nix
+    xdg.mime.defaultApplications = {
+      "inode/directory" = "org.kde.dolphin.desktop";
+      "application/pdf" = "org.kde.okular.desktop";
+      "image/png" = "org.kde.gwenview.desktop";
+      "image/jpeg" = "org.kde.gwenview.desktop";
+    };
+    home-manager.sharedModules = [ hm.kde ];
   };
 
   # Only the keys below are written, anything else stays editable from the KDE settings
-  flake.modules.homeManager.desktop =
+  flake.modules.homeManager.kde =
     {
       config,
       inputs,
+      lib,
       osConfig,
+      pkgs,
       ...
     }:
     let
@@ -60,9 +70,21 @@ in
       # Where KDE keeps the wallpaper, and where it is saved across a panel rebuild
       applets = "${config.xdg.configHome}/plasma-org.kde.plasma.desktop-appletsrc";
       saved = "${config.xdg.dataHome}/plasma-manager/wallpaper";
+      # Dolphin goes right after the terminal, the first launcher of every user
+      launchers = osConfig.aenix.users.${config.home.username}.launchers;
     in
     {
       imports = [ inputs.plasma-manager.homeModules.plasma-manager ];
+
+      # Plasma Integration: media controls and downloads of the browsers in the Plasma tray
+      programs.firefox = {
+        nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
+        policies.ExtensionSettings."plasma-browser-integration@kde.org" = {
+          installation_mode = "normal_installed";
+          install_url = "https://addons.mozilla.org/firefox/downloads/latest/plasma-integration/latest.xpi";
+        };
+      };
+      programs.brave.extensions = [ { id = "cimiefiiaegbelhefglklhhakcgmhkai"; } ];
 
       programs.plasma = {
         enable = true;
@@ -119,9 +141,9 @@ in
               "org.kde.plasma.kickoff"
               {
                 iconTasks = {
-                  launchers = map (
-                    app: "applications:${app}.desktop"
-                  ) osConfig.aenix.users.${config.home.username}.launchers;
+                  launchers = map (app: "applications:${app}.desktop") (
+                    lib.take 1 launchers ++ [ "org.kde.dolphin" ] ++ lib.drop 1 launchers
+                  );
                   appearance.iconSpacing = "small";
                 };
               }

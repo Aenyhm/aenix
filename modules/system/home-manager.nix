@@ -15,7 +15,7 @@ in
       home-manager = {
         useGlobalPkgs = true;
         useUserPackages = true;
-        # A file home-manager takes over (mimeapps.list written by KDE) is renamed instead of failing the switch
+        # A file home-manager takes over from an app is renamed instead of failing the switch
         backupFileExtension = "backup";
         extraSpecialArgs = { inherit inputs; };
         users = lib.mapAttrs (_: user: { imports = [ hm.base ] ++ user.homeModules; }) config.aenix.users;

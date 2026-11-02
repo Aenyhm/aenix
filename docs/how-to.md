@@ -24,11 +24,11 @@ The README maps each directory. What the tree does not tell:
 
 ## Change a KDE setting
 
-A setting declared in `modules/system/desktop.nix` is written back at each rebuild, the others stay as set from the KDE interface. Try a setting by hand first, declare it to keep it across reinstalls. `nix run github:nix-community/plasma-manager` prints the current KDE settings in Nix, ready to copy into `programs.plasma.configFile`.
+A setting declared in `modules/system/kde.nix` is written back at each rebuild, the others stay as set from the KDE interface. Try a setting by hand first, declare it to keep it across reinstalls. `nix run github:nix-community/plasma-manager` prints the current KDE settings in Nix, ready to copy into `programs.plasma.configFile`.
 
 The login screen runs its own KWin, on the monitor's preferred mode, and the monitor goes black at login while it switches to the mode of the session. After the first login and after each change of the display settings, give the login screen the session's ones: System Settings, Colours & Themes, Login Screen (SDDM), "Apply Plasma Settings". The copy lands in `/var/lib/sddm/.config` and survives rebuilds.
 
-The panel is rebuilt from scratch each time its declaration changes. The wallpaper chosen in KDE lives in the same file as the panel, so two startup scripts of `desktop.nix` save it at each login and set it again when the rebuild lost it.
+The panel is rebuilt from scratch each time its declaration changes. The wallpaper chosen in KDE lives in the same file as the panel, so two startup scripts of `kde.nix` save it at each login and set it again when the rebuild lost it.
 
 ## Sync the work files
 

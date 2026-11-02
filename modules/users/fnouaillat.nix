@@ -20,7 +20,6 @@ in
       ];
       launchers = [
         "com.mitchellh.ghostty"
-        "org.kde.dolphin"
         "obsidian"
         "dev.zed.Zed"
         "pgadmin"

@@ -15,7 +15,7 @@ in
       base
       nix
       home-manager
-      desktop
+      kde
       syncthing
       docker
       gaming
@@ -62,7 +62,7 @@ in
       allowedTCPPorts = [ 22001 ];
       allowedUDPPorts = [ 22001 ];
     };
-    # Dolphin shows a USB-connected iPhone (photos, app files) once it trusts this computer
+    # The file manager shows a USB-connected iPhone (photos, app files) once it trusts this computer
     services.usbmuxd.enable = true;
   };
 

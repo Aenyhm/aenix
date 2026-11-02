@@ -1,5 +1,20 @@
 { defaultBrowser, ... }:
 {
+  # Default applications in /etc/xdg/mimeapps.list, the desktop module adds those of its own apps.
+  # ~/.config/mimeapps.list stays free for the desktop settings and the apps registering their
+  # links (Slack, Claude), and its entries win over these ones
+  flake.modules.nixos.base.xdg.mime.defaultApplications = {
+    "text/plain" = "dev.zed.Zed.desktop";
+    "text/markdown" = "dev.zed.Zed.desktop";
+    "text/html" = "${defaultBrowser}.desktop";
+    "x-scheme-handler/http" = "${defaultBrowser}.desktop";
+    "x-scheme-handler/https" = "${defaultBrowser}.desktop";
+    "audio/mpeg" = "org.gnome.Rhythmbox3.desktop";
+    "audio/flac" = "org.gnome.Rhythmbox3.desktop";
+    "video/mp4" = "vlc.desktop";
+    "video/x-matroska" = "vlc.desktop";
+  };
+
   flake.modules.homeManager.apps = { pkgs, ... }: {
     home.packages = with pkgs; [
       # Commands
@@ -30,26 +45,6 @@
     ];
 
     programs.htop.enable = true;
-
-    # Default applications, KDE can no longer change them from its settings
-    xdg.mimeApps = {
-      enable = true;
-      defaultApplications = {
-        "inode/directory" = "org.kde.dolphin.desktop";
-        "text/plain" = "dev.zed.Zed.desktop";
-        "text/markdown" = "dev.zed.Zed.desktop";
-        "text/html" = "${defaultBrowser}.desktop";
-        "x-scheme-handler/http" = "${defaultBrowser}.desktop";
-        "x-scheme-handler/https" = "${defaultBrowser}.desktop";
-        "application/pdf" = "org.kde.okular.desktop";
-        "image/png" = "org.kde.gwenview.desktop";
-        "image/jpeg" = "org.kde.gwenview.desktop";
-        "audio/mpeg" = "org.gnome.Rhythmbox3.desktop";
-        "audio/flac" = "org.gnome.Rhythmbox3.desktop";
-        "video/mp4" = "vlc.desktop";
-        "video/x-matroska" = "vlc.desktop";
-      };
-    };
 
     # Fix Obsidian opening in a separate Wayland window
     xdg.desktopEntries.obsidian = {

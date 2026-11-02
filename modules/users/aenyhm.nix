@@ -20,13 +20,12 @@ in
       ];
       launchers = [
         "com.mitchellh.ghostty"
-        "org.kde.dolphin"
         "dev.zed.Zed"
         "obsidian"
         defaultBrowser
+        "spotify"
         "signal"
         "info.mumble.Mumble"
-        "spotify"
         "steam"
         "io.github.Faugus.faugus-launcher"
       ];
