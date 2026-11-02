@@ -12,7 +12,7 @@
     };
     boot.zswap.enable = true;
 
-    # The swap is smaller than the RAM, so hibernation would fail: KDE stops offering it
+    # Suspend to RAM only, see docs/install.md
     systemd.sleep.settings.Sleep = {
       AllowHibernation = false;
       AllowHybridSleep = false;

@@ -24,11 +24,11 @@ The README maps each directory. What the tree does not tell:
 
 ## Change a KDE setting
 
-A setting declared in `modules/system/desktop.nix` is written back at each rebuild, the others stay as set from the KDE interface. Try a setting by hand first, declare it to keep it across reinstalls. `nix run github:nix-community/plasma-manager` prints the current KDE settings in Nix, ready to copy into `programs.plasma.configFile`.
+A setting declared in `modules/system/kde.nix` is written back at each rebuild, the others stay as set from the KDE interface. Try a setting by hand first, declare it to keep it across reinstalls. `nix run github:nix-community/plasma-manager` prints the current KDE settings in Nix, ready to copy into `programs.plasma.configFile`.
 
 The login screen runs its own KWin, on the monitor's preferred mode, and the monitor goes black at login while it switches to the mode of the session. After the first login and after each change of the display settings, give the login screen the session's ones: System Settings, Colours & Themes, Login Screen (SDDM), "Apply Plasma Settings". The copy lands in `/var/lib/sddm/.config` and survives rebuilds.
 
-The panel is rebuilt from scratch each time its declaration changes. The wallpaper chosen in KDE lives in the same file as the panel, so two startup scripts of `desktop.nix` save it at each login and set it again when the rebuild lost it.
+The panel is rebuilt from scratch each time its declaration changes. The wallpaper chosen in KDE lives in the same file as the panel, so two startup scripts of `kde.nix` save it at each login and set it again when the rebuild lost it.
 
 ## Sync the work files
 
@@ -52,6 +52,7 @@ The link goes from `~/.claude` to the synced folder and not the other way round:
 | A binary built for another distribution fails with "No such file or directory" although it exists | it looks for the loader and libraries at the standard Linux paths, which nix-ld answers in `modules/system/base.nix`. A library still missing goes into `programs.nix-ld.libraries` |
 | A script starting with `#!/bin/bash` or calling `/usr/bin/<tool>` fails | envfs serves those paths from the PATH, so the tool is missing from it: install it |
 | GitHub refuses a clone or a push as the wrong user | the account comes from the key: company repositories go through `github.com`, personal ones through the `github-aenyhm` alias (`modules/apps/ssh.nix`), so set the remote to `git@github-aenyhm:Aenyhm/<repo>` |
+| Crow Translate gives an instance error (HTTP 429) | the Mozhi instance that relays the translations to Google is rate limited: Paramètres > Mozhi > URL > Détecter plus rapidement picks a working one |
 | The Syncthing tray shows nothing | configure it from its GUI, then `rm ~/.config/syncthingtray.ini` and `systemctl --user restart syncthingtray` |
 
 ## Upgrade NixOS

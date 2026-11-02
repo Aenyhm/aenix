@@ -1,11 +1,10 @@
 {
   flake.modules.homeManager.apps =
-    { pkgs, ... }:
+    { ... }:
     {
       programs.firefox = {
         enable = true;
         languagePacks = [ "fr" ];
-        nativeMessagingHosts = [ pkgs.kdePackages.plasma-browser-integration ];
 
         # Policies first: one documented switch instead of the prefs behind it. Prefs for the rest
         policies = {
@@ -59,12 +58,13 @@
             FirefoxLabs = false;
           };
 
-          # Installed at first start, then updated by Firefox
+          # Installed at first start, then updated by Firefox. The desktop module adds its own integration
           ExtensionSettings =
             builtins.mapAttrs
               (_: slug: {
                 installation_mode = "normal_installed";
                 install_url = "https://addons.mozilla.org/firefox/downloads/latest/${slug}/latest.xpi";
+                private_browsing = true;
               })
               {
                 "uBlock0@raymondhill.net" = "ublock-origin";
@@ -72,12 +72,19 @@
                 "jid1-KKzOGWgsW3Ao4Q@jetpack" = "i-dont-care-about-cookies";
                 "myallychou@gmail.com" = "youtube-recommended-videos";
                 "{9a3104a2-02c2-464c-b069-82344e5ed4ec}" = "youtube-no-translation";
-                "plasma-browser-integration@kde.org" = "plasma-integration";
               };
+        };
+
+        # force: Firefox keeps its engines in a binary file, rewritten whole at each switch
+        profiles.default.search = {
+          default = "ddg";
+          privateDefault = "ddg";
+          force = true;
         };
 
         profiles.default.settings = {
           # Startup and interface
+          "intl.locale.requested" = "fr,en-US"; # the language pack alone leaves the interface in English
           "browser.startup.page" = 3; # restore the previous session
           "browser.aboutConfig.showWarning" = false;
           "browser.theme.toolbar-theme" = 0; # dark

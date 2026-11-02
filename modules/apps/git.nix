@@ -21,6 +21,8 @@
         };
         push.autoSetupRemote = true;
         fetch.prune = true;
+        # After a force push, only the local commits made since are replayed on the new remote
+        pull.rebase = true;
       };
     };
   };

@@ -1,14 +1,8 @@
 { inputs, ... }:
-{
-  # Declares flake.modules.<class>.<name>, one file can then hold the nixos and homeManager halves of a feature
-  imports = [ inputs.flake-parts.flakeModules.modules ];
-
-  # Monospace font of KDE and Ghostty (Zed names it in apps/zed/settings.json), installed by the base module
-  _module.args.monoFont = "JetBrainsMono Nerd Font Mono";
-
-  # AeTheme colours of Zed and Ghostty, inspired by Gruvbox and Gruber Darker.
+let
+  # AeTheme colours of text editor and terminal, inspired by Gruvbox and Gruber Darker.
   # Accents share an OKLCH lightness near 0.76, with hues spread apart
-  _module.args.palette = {
+  palette = {
     bg = "#121110";
     line = "#1a1917"; # current line
     selection = "#36322d";
@@ -23,8 +17,18 @@
     orange = "#e99355";
     cyan = "#7fc2a4";
   };
+in
+{
+  # Declares flake.modules.<class>.<name>, one file can then hold the nixos and homeManager halves of a feature
+  imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  # .desktop name of the default browser: links, KDE, taskbar launchers
+  # Monospace font of the desktop and Ghostty (Zed names it in apps/zed/settings.json), installed by the base module
+  _module.args.monoFont = "JetBrainsMono Nerd Font Mono";
+
+  _module.args.palette = palette;
+  _module.args.noHashPalette = builtins.mapAttrs (_: builtins.substring 1 (-1)) palette;
+
+  # .desktop name of the default browser: links, the desktop, taskbar launchers
   _module.args.defaultBrowser = "brave-browser";
 
   # Emails and name of the work session on the login screen, kept in Aenyhm/aenix-private

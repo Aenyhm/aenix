@@ -23,6 +23,12 @@
         AutofillAddressEnabled = false;
         AutofillCreditCardEnabled = false;
         DefaultBrowserSettingEnabled = false;
+        # DuckDuckGo, locked in the settings by the policy
+        DefaultSearchProviderEnabled = true;
+        DefaultSearchProviderName = "DuckDuckGo";
+        DefaultSearchProviderKeyword = "duckduckgo.com";
+        DefaultSearchProviderSearchURL = "https://duckduckgo.com/?q={searchTerms}";
+        DefaultSearchProviderSuggestURL = "https://duckduckgo.com/ac/?q={searchTerms}&type=list";
       };
     };
   };
@@ -33,10 +39,10 @@
       programs.brave = {
         enable = true;
         package = pkgs.brave; # TODO: brave-origin once nixpkgs has it, then check defaultBrowser (its .desktop name)
-        # Installed at first start from the Chrome Web Store, then updated by Brave
+        # Installed at first start from the Chrome Web Store, then updated by Brave. The desktop module
+        # adds its own integration
         extensions = [
           { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
-          { id = "cimiefiiaegbelhefglklhhakcgmhkai"; } # Plasma Integration
           { id = "khncfooichmfjbepaaaebmommgaepoid"; } # Unhook, no YouTube recommendations
           { id = "ndpmhjnlfkgfalaieeneneenijondgag"; } # YouTube Anti Translate
         ];

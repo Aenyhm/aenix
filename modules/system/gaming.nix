@@ -1,4 +1,4 @@
-{ palette, ... }:
+{ noHashPalette, ... }:
 {
   flake.modules.nixos.gaming = { pkgs, ... }: {
     # Steam also enables 32-bit graphics and audio
@@ -14,9 +14,6 @@
 
   flake.modules.homeManager.gaming =
     { pkgs, ... }:
-    let
-      noHashPalette = builtins.mapAttrs (_: builtins.substring 1 (-1)) palette;
-    in
     {
       home.packages = [
         # Launchers
