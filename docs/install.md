@@ -54,6 +54,7 @@ Each user finishes its own session, since these settings live in the home direct
 | Music | Rhythmbox reads the music folder, NAS included |
 | Firmware and BIOS | `update` installs them along with the system |
 | Login screen | give it the display settings of the session, see [Change a KDE setting](how-to.md#change-a-kde-setting) |
+| Crow Translate | pick a working translation instance, see [When something fails](how-to.md#when-something-fails) |
 
 The work session needs more:
 

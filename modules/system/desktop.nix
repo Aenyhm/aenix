@@ -26,7 +26,6 @@ in
     ];
 
     environment.systemPackages = with pkgs; [
-      crow-translate
       kdePackages.arianna
       kdePackages.kamoso
       kdePackages.kcalc

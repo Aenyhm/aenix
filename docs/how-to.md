@@ -52,6 +52,7 @@ The link goes from `~/.claude` to the synced folder and not the other way round:
 | A binary built for another distribution fails with "No such file or directory" although it exists | it looks for the loader and libraries at the standard Linux paths, which nix-ld answers in `modules/system/base.nix`. A library still missing goes into `programs.nix-ld.libraries` |
 | A script starting with `#!/bin/bash` or calling `/usr/bin/<tool>` fails | envfs serves those paths from the PATH, so the tool is missing from it: install it |
 | GitHub refuses a clone or a push as the wrong user | the account comes from the key: company repositories go through `github.com`, personal ones through the `github-aenyhm` alias (`modules/apps/ssh.nix`), so set the remote to `git@github-aenyhm:Aenyhm/<repo>` |
+| Crow Translate gives an instance error (HTTP 429) | the Mozhi instance that relays the translations to Google is rate limited: Paramètres > Mozhi > URL > Détecter plus rapidement picks a working one |
 | The Syncthing tray shows nothing | configure it from its GUI, then `rm ~/.config/syncthingtray.ini` and `systemctl --user restart syncthingtray` |
 
 ## Upgrade NixOS
