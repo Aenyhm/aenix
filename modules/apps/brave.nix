@@ -23,6 +23,12 @@
         AutofillAddressEnabled = false;
         AutofillCreditCardEnabled = false;
         DefaultBrowserSettingEnabled = false;
+        # DuckDuckGo, locked in the settings by the policy
+        DefaultSearchProviderEnabled = true;
+        DefaultSearchProviderName = "DuckDuckGo";
+        DefaultSearchProviderKeyword = "duckduckgo.com";
+        DefaultSearchProviderSearchURL = "https://duckduckgo.com/?q={searchTerms}";
+        DefaultSearchProviderSuggestURL = "https://duckduckgo.com/ac/?q={searchTerms}&type=list";
       };
     };
   };

@@ -64,6 +64,7 @@
               (_: slug: {
                 installation_mode = "normal_installed";
                 install_url = "https://addons.mozilla.org/firefox/downloads/latest/${slug}/latest.xpi";
+                private_browsing = true;
               })
               {
                 "uBlock0@raymondhill.net" = "ublock-origin";
@@ -74,8 +75,16 @@
               };
         };
 
+        # force: Firefox keeps its engines in a binary file, rewritten whole at each switch
+        profiles.default.search = {
+          default = "ddg";
+          privateDefault = "ddg";
+          force = true;
+        };
+
         profiles.default.settings = {
           # Startup and interface
+          "intl.locale.requested" = "fr,en-US"; # the language pack alone leaves the interface in English
           "browser.startup.page" = 3; # restore the previous session
           "browser.aboutConfig.showWarning" = false;
           "browser.theme.toolbar-theme" = 0; # dark
