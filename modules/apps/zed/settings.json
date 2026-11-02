@@ -19,7 +19,8 @@
   "buffer_font_weight": 100,
   "ui_font_size": 16.0,
   "terminal": {
-    "font_size": 16.0
+    "font_size": 16.0,
+    "font_weight": 100
   },
   "cursor_blink": false,
   "tab_size": 4,

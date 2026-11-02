@@ -82,7 +82,7 @@
         # One SSH agent per session, ~/.ssh keys are added at first use (modules/apps/ssh.nix)
         programs.ssh.startAgent = true;
 
-        # Firmware and BIOS updates published by the vendor: fwupdmgr refresh && fwupdmgr update
+        # Firmware and BIOS updates published by the vendor, installed by `update`
         services.fwupd.enable = true;
 
         # Binaries built for other distributions (Pythons from uv, native wheels, vite-plus, Claude Code,

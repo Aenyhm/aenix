@@ -15,9 +15,9 @@
     import-tree.url = "github:vic/import-tree";
 
     # Private values and the modules of the work laptop, fetched over SSH with the personal key
-    # (github-aenyhm, modules/apps/ssh.nix): build as the user (nh, or nixos-rebuild --sudo)
+    # of the github-aenyhm alias (modules/apps/ssh.nix)
     private = {
-      url = "git+ssh://git@github.com/Aenyhm/aenix-private";
+      url = "git+ssh://git@github-aenyhm/Aenyhm/aenix-private";
       flake = false;
     };
 

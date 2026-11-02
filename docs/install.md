@@ -23,25 +23,29 @@ zswap compresses the pages in RAM first, so the swap only absorbs peaks: above 1
 
    home-manager writes the alias into `~/.ssh/config` at the first switch, which needs it already. Until then, write it by hand:
    ```
-   printf 'Host github-aenyhm\n  HostName github.com\n  IdentityFile ~/.ssh/id_ed25519_aenyhm\n' > ~/.ssh/config
+   printf 'Host github-aenyhm\n  HostName github.com\n  User git\n  IdentityFile ~/.ssh/id_ed25519_aenyhm\n  IdentitiesOnly yes\n' > ~/.ssh/config
    ```
-3. **Clone the repository** into `~/aenix`, where `update` and `nh` look for it: `git clone git@github-aenyhm:Aenyhm/nixos-configuration ~/aenix`.
-4. **Generate the hardware config.** Copy the output of `nixos-generate-config --show-hardware-config` into `modules/hosts/<host>/hardware.nix`, inside the `flake.modules.nixos.<host>-hardware` module. Keep the nixos-hardware imports already in the file.
+   `IdentitiesOnly` keeps ssh from offering the work key first, which would log in with the work account. `ssh -T git@github-aenyhm` answers `Hi Aenyhm!` once it works.
+3. **Clone the repository** into `~/aenix`, where `update` and `nh` look for it. The fresh system has no git: open `nix-shell -p git` and stay in it until the first switch of step 7, which runs git too.
+   ```
+   git clone git@github-aenyhm:Aenyhm/aenix ~/aenix
+   ```
+4. **Generate the hardware config.** Copy the output of `nixos-generate-config --show-hardware-config` into `modules/hosts/<host>/hardware.nix`, inside the `flake.modules.nixos.<host>-hardware` module. Keep the nixos-hardware imports already in the file. With encryption ticked, the installer unlocks the swap from `/etc/nixos/configuration.nix`, not from the hardware config: copy its `boot.initrd.luks.devices` line too, or every boot waits 90 s for the swap.
 5. **Check `system.stateVersion`** in `modules/hosts/<host>/default.nix`: the nixpkgs release of `flake.nix` at this first install, never changed afterwards (see [Upgrade NixOS](how-to.md#upgrade-nixos)).
-6. **On a work machine, enable the host** by uncommenting its `flake.nixosConfigurations` entry in `modules/hosts/<host>/default.nix`.
-7. **Place the secrets**, kept out of the repository. On a work machine, those of the work module, see the README of `Aenyhm/aenix-private`. On every host, the NAS account that reads the music share, mounted for every user:
+6. **Place the secrets**, kept out of the repository. On a work machine, those of the work module, see the README of `Aenyhm/aenix-private`. On every host, the NAS account that reads the music share, mounted for every user:
    ```
    sudo install -m 600 /dev/stdin /etc/nas-credentials   # type the two lines below, then Ctrl+D
    username=<NAS user>
    password=<NAS password>
    ```
-8. **Build and switch.** A flake only sees files tracked by git, so add new files first. `--sudo` builds as your user, whose SSH key fetches the private repository, and activates as root:
+7. **Build and switch.** A flake only sees files tracked by git, so add new files first. The fresh system has flakes disabled, `NIX_CONFIG` enables them for this first build. An older ISO names `--sudo` `--use-remote-sudo`:
    ```
+   export NIX_CONFIG="experimental-features = nix-command flakes"
    git add -A
    nixos-rebuild switch --flake .#<hostname> --sudo
    ```
    The configuration is named after the `networking.hostName` of the host. Only this first switch names it, since the installer called the machine `nixos`. From then on, `nh os switch` finds it from the hostname.
-9. **Set a password for each user**, created without one: `sudo passwd <user>`.
+8. **Set a password for each user**, created without one: `sudo passwd <user>`.
 
 ## After the first login
 
@@ -51,8 +55,6 @@ Each user finishes its own session, since these settings live in the home direct
 |---|---|
 | GitHub access for git | `gh auth login` |
 | Syncthing | pair with the other devices from `127.0.0.1:8384`, or the port the host sets for a second session. Each user runs its own Syncthing: share with it only the folders it needs |
-| Music | Rhythmbox reads the music folder, NAS included |
-| Firmware and BIOS | `update` installs them along with the system |
 | Login screen | give it the display settings of the session, see [Change a KDE setting](how-to.md#change-a-kde-setting) |
 | Crow Translate | pick a working translation instance, see [When something fails](how-to.md#when-something-fails) |
 

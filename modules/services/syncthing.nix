@@ -15,9 +15,6 @@ in
     home-manager.sharedModules = [ hm.syncthing ];
   };
 
-  # If the tray does not work: configure using the GUI then:
-  #   rm ~/.config/syncthingtray.ini
-  #   systemctl --user restart syncthingtray
   flake.modules.homeManager.syncthing = { pkgs, ... }: {
     services.syncthing = {
       enable = true;

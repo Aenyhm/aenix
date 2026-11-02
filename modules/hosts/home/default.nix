@@ -25,7 +25,7 @@ in
     ];
 
     networking.hostName = "aenyhm-home-linux";
-    # nixpkgs release of the first install. Never change it, even after upgrading nixpkgs: see docs/how-to.md
+    # Never change it: docs/how-to.md, Upgrade NixOS
     system.stateVersion = "26.05";
 
     hardware.graphics.enable = true;

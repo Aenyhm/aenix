@@ -25,13 +25,12 @@ in
       scheduler = "scx_lavd";
       extraArgs = [ "--autopower" ];
     };
-    # nixpkgs release of flake.nix at the first install. Never change it afterwards: see docs/how-to.md
+    # Never change it: docs/how-to.md, Upgrade NixOS
     system.stateVersion = "26.05";
   };
 
-  # TODO when work-hardware is filled in
-  # flake.nixosConfigurations.fnouaillat-work = inputs.nixpkgs.lib.nixosSystem {
-  #   specialArgs = { inherit inputs; };
-  #   modules = [ nixos.host-work ];
-  # };
+  flake.nixosConfigurations.fnouaillat-work = inputs.nixpkgs.lib.nixosSystem {
+    specialArgs = { inherit inputs; };
+    modules = [ nixos.host-work ];
+  };
 }

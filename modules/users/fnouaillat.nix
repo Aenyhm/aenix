@@ -22,7 +22,6 @@ in
         "com.mitchellh.ghostty"
         "obsidian"
         "dev.zed.Zed"
-        "pgadmin"
         defaultBrowser
         "slack"
       ];
@@ -45,7 +44,6 @@ in
         dbeaver-bin
         delve
         go
-        jetbrains.pycharm
         opentofu
         postgresql
         slack
@@ -53,7 +51,6 @@ in
         terragrunt
         uv
       ];
-      # Claude Code comes from its official installer, which keeps it up to date in ~/.local/bin.
 
       # pgAdmin, for its graphical EXPLAIN and its completion: its server runs in the background
       # on 127.0.0.1:5050, and its launcher opens it in a Brave window without tabs or address bar
@@ -71,9 +68,7 @@ in
         settings.StartupWMClass = "brave-127.0.0.1__-Default";
       };
 
-      # ~/sync/work is the work Syncthing folder: notes, scripts, the Claude Code config and the
-      # work secrets (.env files, AWS profiles). Its .stignore keeps the history and sessions of
-      # ~/.claude on each machine
+      # ~/sync/work is the work Syncthing folder, see docs/how-to.md
       home.file.".claude".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/sync/work/claude-config";
       home.activation.claudeConfigDir = lib.hm.dag.entryBefore [ "writeBoundary" ] ''
@@ -90,7 +85,7 @@ in
       home.sessionVariables.PYTHONDONTWRITEBYTECODE = "1";
       programs.bash.initExtra = ''
         if [ -f ~/sync/work/scripts/aliases.sh ]; then . ~/sync/work/scripts/aliases.sh; fi
-        # Node.js, vp and vpr come from vite-plus, installed by its own script (esgc-front README)
+        # vite-plus, installed by its own script
         if [ -f ~/.config/vite-plus/env ]; then . ~/.config/vite-plus/env; fi
       '';
     };
