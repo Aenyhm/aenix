@@ -36,6 +36,8 @@ in
       # Newest driver rather than the production branch: fixes and gains for recent games
       package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
+    # Fan and pump speeds of the motherboard (NCT6798 chip), not loaded on its own
+    boot.kernelModules = [ "nct6775" ];
     # sched-ext scheduler, as on CachyOS: games keep the CPU when other programs load it
     services.scx = {
       enable = true;
