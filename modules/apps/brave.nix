@@ -38,7 +38,8 @@
     {
       programs.brave = {
         enable = true;
-        package = pkgs.brave; # TODO: brave-origin once nixpkgs has it, then check defaultBrowser (its .desktop name)
+        # Removed from stable, which had no maintainer to backport its security fixes
+        package = pkgs.unstable.brave;
         # Installed at first start from the Chrome Web Store, then updated by Brave. The desktop module
         # adds its own integration
         extensions = [
