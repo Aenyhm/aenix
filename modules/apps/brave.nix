@@ -33,19 +33,16 @@
     };
   };
 
-  flake.modules.homeManager.apps =
-    { pkgs, ... }:
-    {
-      programs.brave = {
-        enable = true;
-        package = pkgs.brave; # TODO: brave-origin once nixpkgs has it, then check defaultBrowser (its .desktop name)
-        # Installed at first start from the Chrome Web Store, then updated by Brave. The desktop module
-        # adds its own integration
-        extensions = [
-          { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
-          { id = "khncfooichmfjbepaaaebmommgaepoid"; } # Unhook, no YouTube recommendations
-          { id = "ndpmhjnlfkgfalaieeneneenijondgag"; } # YouTube Anti Translate
-        ];
-      };
+  flake.modules.homeManager.apps = {
+    programs.brave = {
+      enable = true;
+      # Installed at first start from the Chrome Web Store, then updated by Brave. The desktop module
+      # adds its own integration
+      extensions = [
+        { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
+        { id = "khncfooichmfjbepaaaebmommgaepoid"; } # Unhook, no YouTube recommendations
+        { id = "ndpmhjnlfkgfalaieeneneenijondgag"; } # YouTube Anti Translate
+      ];
     };
+  };
 }
