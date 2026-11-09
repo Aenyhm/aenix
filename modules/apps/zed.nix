@@ -1,4 +1,9 @@
-{ paletteDark, paletteLight, ... }:
+{
+  config,
+  paletteDark,
+  paletteLight,
+  ...
+}:
 let
   # One Zed theme from one palette, for its dark and light versions
   theme =
@@ -51,7 +56,9 @@ let
     };
 in
 {
-  flake.modules.homeManager.apps = {
+  flake.modules.homeManager.apps.imports = [ config.flake.modules.homeManager.zed ];
+
+  flake.modules.homeManager.zed = {
     programs.zed-editor = {
       enable = true;
       themes.aetheme = {

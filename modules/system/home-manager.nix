@@ -18,7 +18,13 @@ in
         # A file home-manager takes over from an app is renamed instead of failing the switch
         backupFileExtension = "backup";
         extraSpecialArgs = { inherit inputs; };
-        users = lib.mapAttrs (_: user: { imports = [ hm.base ] ++ user.homeModules; }) config.aenix.users;
+        users = lib.mapAttrs (_: user: {
+          imports = [ hm.base ] ++ user.homeModules;
+          programs.git.settings.user = {
+            name = user.fullName;
+            inherit (user) email;
+          };
+        }) config.aenix.users;
       };
     };
 

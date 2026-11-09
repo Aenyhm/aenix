@@ -1,4 +1,5 @@
 {
+  config,
   monoFont,
   paletteDark,
   paletteLight,
@@ -34,7 +35,9 @@ let
     };
 in
 {
-  flake.modules.homeManager.apps = {
+  flake.modules.homeManager.apps.imports = [ config.flake.modules.homeManager.ghostty ];
+
+  flake.modules.homeManager.ghostty = {
     programs.ghostty = {
       enable = true;
 

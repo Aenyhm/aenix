@@ -1,4 +1,4 @@
-{ defaultBrowser, ... }:
+{ config, defaultBrowser, ... }:
 {
   # Default applications in /etc/xdg/mimeapps.list, the desktop module adds those of its own apps.
   # ~/.config/mimeapps.list stays free for the desktop settings and the apps registering their
@@ -15,21 +15,27 @@
     "video/x-matroska" = "vlc.desktop";
   };
 
-  flake.modules.homeManager.apps = { pkgs, ... }: {
+  # Terminal commands, on the Mac too
+  flake.modules.homeManager.cli = { pkgs, ... }: {
     home.packages = with pkgs; [
-      # Commands
       curl
       jq
       tree
       wget
 
-      # Nix commands
+      # Nix
       nixfmt
-      nixfmt-tree # format a directory
+      nixfmt-tree # treefmt, formats a directory
+      nixd # LSP for Zed
+    ];
 
-      # LSP
-      nixd # for Zed
+    programs.htop.enable = true;
+  };
 
+  flake.modules.homeManager.apps = { pkgs, ... }: {
+    imports = [ config.flake.modules.homeManager.cli ];
+
+    home.packages = with pkgs; [
       # Office
       libreoffice-qt-fresh # without Qt: libreoffice-fresh
       obsidian
@@ -43,8 +49,6 @@
       # Development
       wl-clipboard # copy and paste from the terminal
     ];
-
-    programs.htop.enable = true;
 
     # Fix Obsidian opening in a separate Wayland window
     xdg.desktopEntries.obsidian = {

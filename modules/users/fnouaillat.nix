@@ -37,6 +37,9 @@ in
       ...
     }:
     {
+      # The default key is the work account's, the personal one sits beside it
+      programs.ssh.settings.github-aenyhm.identityFile = "~/.ssh/id_ed25519_aenyhm";
+
       home.packages = with pkgs; [
         # Official .deb, repackaged. Without Cowork, the agent that works in a QEMU virtual machine
         (callPackage "${inputs.claude-desktop}/package.nix" { withCowork = false; })

@@ -6,7 +6,7 @@ nh and `nixos-rebuild --sudo` build as your user, whose SSH key fetches the priv
 
 | Task | Command |
 |---|---|
-| Apply a config change | `nh os switch`, which lists the package changes before activating |
+| Apply a config change | `nh os switch`, which lists the package changes before activating. On the Mac, `nh darwin switch`; the Homebrew apps update themselves |
 | Update everything | `update`: flake inputs, system, then firmware and BIOS. Commit the new `flake.lock` afterwards |
 | Try a change without keeping it at boot | `nh os test` |
 | Undo a broken update | pick the previous generation in the GRUB menu, or `nixos-rebuild switch --rollback --sudo`, then `git checkout flake.lock` |

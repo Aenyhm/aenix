@@ -1,14 +1,14 @@
+{ config, ... }:
 {
-  flake.modules.homeManager.apps = { config, osConfig, ... }: {
+  flake.modules.homeManager.apps.imports = [ config.flake.modules.homeManager.git ];
+
+  # user.name and user.email come from the host: aenix.users on NixOS, the mac host on macOS
+  flake.modules.homeManager.git = {
     programs.gh.enable = true; # also the git credential helper for github.com
     programs.git = {
       enable = true;
       ignores = [ "**/.claude/settings.local.json" ];
       settings = {
-        user = {
-          name = osConfig.aenix.users.${config.home.username}.fullName;
-          email = osConfig.aenix.users.${config.home.username}.email;
-        };
         alias = {
           ci = "commit";
           co = "checkout";

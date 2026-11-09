@@ -1,14 +1,19 @@
+{ config, ... }:
 {
-  flake.modules.homeManager.apps =
+  flake.modules.homeManager.apps.imports = [ config.flake.modules.homeManager.bash ];
+
+  # Commands of the Linux apps
+  flake.modules.homeManager.apps.programs.bash.shellAliases = {
+    clipboard = "wl-copy";
+    zed = "zeditor";
+  };
+
+  flake.modules.homeManager.bash =
     { pkgs, ... }:
     {
       programs.bash = {
         enable = true;
-        shellAliases = {
-          ll = "ls -la";
-          clipboard = "wl-copy";
-          zed = "zeditor";
-        };
+        shellAliases.ll = "ls -la";
         # Current git branch in the prompt
         initExtra = ''
           source ${pkgs.git}/share/git/contrib/completion/git-prompt.sh

@@ -9,6 +9,11 @@
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
+    # The Mac, without NixOS: same release as nixpkgs
+    nix-darwin = {
+      url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
+      inputs.nixpkgs.follows = "nixpkgs";
+    };
 
     # Structure: every file under modules/ is a flake-parts module
     flake-parts.url = "github:hercules-ci/flake-parts";
