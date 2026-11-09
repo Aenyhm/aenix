@@ -110,6 +110,7 @@ in
           '';
         };
         input.keyboard.numlockOnStartup = "on";
+        # Applied once, a theme picked in the system settings then stays
         workspace = {
           colorScheme = "BreezeDark";
           theme = "breeze-dark";

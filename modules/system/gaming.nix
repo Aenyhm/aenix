@@ -1,4 +1,4 @@
-{ noHashPalette, ... }:
+{ noHashPaletteDark, ... }:
 {
   flake.modules.nixos.gaming = { pkgs, ... }: {
     # Steam also enables 32-bit graphics and audio
@@ -28,7 +28,7 @@
       home.sessionVariables.SDL_VIDEO_DRIVER = "wayland";
 
       # cf. https://raw.githubusercontent.com/flightlessmango/MangoHud/master/data/MangoHud.conf
-      programs.mangohud = with noHashPalette; {
+      programs.mangohud = with noHashPaletteDark; {
         enable = true;
         enableSessionWide = true; # MANGOHUD=1 for every game
         settings = {

@@ -1,5 +1,9 @@
 {
-  "theme": "AeTheme Dark",
+  "theme": {
+    "mode": "system",
+    "light": "AeTheme Light",
+    "dark": "AeTheme Dark"
+  },
   "base_keymap": "SublimeText",
   "disable_ai": true,
   "auto_update": false,

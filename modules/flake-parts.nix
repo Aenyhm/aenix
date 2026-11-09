@@ -1,21 +1,37 @@
 { inputs, ... }:
 let
-  # AeTheme colours of text editor and terminal, inspired by Gruvbox and Gruber Darker.
-  # Accents share an OKLCH lightness near 0.76, with hues spread apart
-  palette = {
+  # AeTheme, colours of text editor and terminal
+  paletteDark = {
     bg = "#121110";
     line = "#1a1917"; # current line
     selection = "#36322d";
+    highlight = "#5b5237"; # selected element, a dark yellow
     gutter = "#615d57"; # line numbers
-    comment = "#928373";
-    fg = "#f0e3ba";
-    yellow = "#deb459";
-    green = "#a5bc6b";
-    blue = "#78b7be";
-    purple = "#d3a0b3";
-    red = "#ed756e";
-    orange = "#e99355";
-    cyan = "#7fc2a4";
+    comment = "#9a9184";
+    fg = "#e9ddc4";
+    yellow = "#d5af57";
+    green = "#a8c06e";
+    blue = "#83c0cc";
+    purple = "#d7a4b6";
+    red = "#f67a6c";
+    orange = "#f29e5b";
+    cyan = "#8dc2aa";
+  };
+  paletteLight = {
+    bg = "#f8f6f4";
+    line = "#ece9e4";
+    selection = "#d8d0c3";
+    highlight = "#e1d3b3";
+    gutter = "#97918a";
+    comment = "#71675d";
+    fg = "#2c251f";
+    yellow = "#7d5e00";
+    green = "#586d03";
+    blue = "#226e7c";
+    purple = "#855165";
+    red = "#b6322b";
+    orange = "#9f5000";
+    cyan = "#347158";
   };
 in
 {
@@ -25,8 +41,9 @@ in
   # Monospace font of the desktop and Ghostty (Zed names it in apps/zed/settings.json), installed by the base module
   _module.args.monoFont = "JetBrainsMono Nerd Font Mono";
 
-  _module.args.palette = palette;
-  _module.args.noHashPalette = builtins.mapAttrs (_: builtins.substring 1 (-1)) palette;
+  _module.args.paletteDark = paletteDark;
+  _module.args.paletteLight = paletteLight;
+  _module.args.noHashPaletteDark = builtins.mapAttrs (_: builtins.substring 1 (-1)) paletteDark;
 
   # .desktop name of the default browser: links, the desktop, taskbar launchers
   _module.args.defaultBrowser = "brave-browser";
