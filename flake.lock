@@ -3,11 +3,11 @@
     "claude-desktop": {
       "flake": false,
       "locked": {
-        "lastModified": 1794275026,
-        "narHash": "sha256-262e5JIVBJ7M6UZrc1yORapAziUrHjuEfWezQb4hhuE=",
+        "lastModified": 1794378251,
+        "narHash": "sha256-+tWx76PykOrIXbseE4AjzUhVE23nG9UY2B4bry/FDA8=",
         "owner": "danielbodart",
         "repo": "claude-desktop",
-        "rev": "23edc4b1812f03f217213bb1b4d71e005f918bab",
+        "rev": "ba50d1bf33b6f68042fa15f08b2c4cf2334b3b77",
         "type": "github"
       },
       "original": {
@@ -96,11 +96,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1794222723,
-        "narHash": "sha256-jehPADpSIsWnyNHw/s44OHF9l6Y75QmW74sqO9cEe0A=",
+        "lastModified": 1794400081,
+        "narHash": "sha256-BuQB4OrIPcXCDVvmLBrzk1eH9Aq/oKYe/fnNJFqrRn4=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "919c16cf46a7acf9b44b2c2444bc39aa094eaa85",
+        "rev": "37ba750aba1c1e78c4d2e0c28e1e4fb84c73ef35",
         "type": "github"
       },
       "original": {
