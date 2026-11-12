@@ -22,6 +22,8 @@
       jq
       tree
       wget
+      zip
+      unzip
 
       # Nix
       nixfmt
