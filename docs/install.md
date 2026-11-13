@@ -101,4 +101,4 @@ nix-darwin installs the apps through Homebrew: shared ones in `/Applications`, t
    In a new terminal, `nh darwin switch` then finds `~/aenix` through `NH_FLAKE`.
 7. **Use Nix's bash as login shell**: `chsh -s /run/current-system/sw/bin/bash`, then log out and back in.
 8. **Log in to GitHub**: `gh auth login`.
-9. **Pair Syncthing** from `127.0.0.1:8384`.
+9. **Start the Syncthing app**, turn on its launch at login in its preferences, and pair the devices from `127.0.0.1:8384`.

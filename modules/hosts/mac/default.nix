@@ -43,7 +43,7 @@ in
       # Homebrew is installed by hand (docs/install.md)
       homebrew = {
         enable = true;
-        # Uninstalls the casks not listed here. The upgrade skips those that update themselves
+        # Uninstalls the casks and formulae not listed here. The upgrade skips those that update themselves
         onActivation = {
           autoUpdate = true;
           upgrade = true;
@@ -71,9 +71,12 @@ in
                 "audacity"
                 "element"
                 "obsidian"
+                "pearcleaner"
                 "signal"
                 "spotify"
                 "steam"
+                # Its own Syncthing, with the menu bar icon (the tray is Linux only)
+                "syncthing-app"
               ];
       };
 
@@ -89,7 +92,6 @@ in
             git
             ghostty
             ssh
-            syncthing
             zed
           ];
           home.stateVersion = "26.05";
@@ -109,8 +111,6 @@ in
             # Downloads updates and installs them at the next start, without asking
             auto-update = "download";
           };
-          # The tray is a systemd service, Linux only. GUI at 127.0.0.1:8384
-          services.syncthing.tray.enable = lib.mkForce false;
           programs.zed-editor.package = null;
           # Zed updates itself, the Homebrew upgrade skips it
           programs.zed-editor.userSettings.auto_update = lib.mkForce true;
