@@ -39,7 +39,7 @@ Work files move between devices through Syncthing, so nothing of the company rea
 | `notes/` | work notes |
 | `scripts/` | scripts and aliases, in the PATH and loaded by bash in the work profile |
 | `claude-config/` | the Claude Code config. The work profile links `~/.claude` to it |
-| `env/` | secrets of the repositories and cloud tools, linked from where they are read |
+| `env/` | the AWS SSO profiles (`aws-config`). Secrets stay in each machine's keyring, read by `secretspec` |
 
 Claude Code also keeps its history, sessions and cache in `~/.claude`, which stay on each machine. The synced file `.stglobalignore` excludes them. Syncthing never syncs a `.stignore`, so on each device, **before** adding the folder, create `~/sync/work/.stignore` with the single line `#include .stglobalignore`. On the NAS, put that line in the Exclusions tab.
 

@@ -48,6 +48,7 @@ in
         go
         opentofu
         postgresql
+        secretspec
         slack
         ssm-session-manager-plugin # aws ssm start-session, used by the bastion tunnel
         terragrunt
@@ -79,6 +80,11 @@ in
       # SSO profiles, no credential: the SSO cache and tokens stay in ~/.aws/sso and ~/.aws/cli
       home.file.".aws/config".source =
         config.lib.file.mkOutOfStoreSymlink "${config.home.homeDirectory}/sync/work/env/aws-config";
+      # Work secrets live in the KDE keyring, read by `secretspec run -P <profile>` from a repo's secretspec.toml
+      xdg.configFile."secretspec/config.toml".text = ''
+        [defaults]
+        provider = "keyring"
+      '';
       # Claude in Chrome, the extension Claude Code drives the browser with
       programs.brave.extensions = [ { id = "fcoeoabgfenejglbffodgkkbkcdhcgfn"; } ];
 
