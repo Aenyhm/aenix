@@ -3,11 +3,11 @@
     "claude-desktop": {
       "flake": false,
       "locked": {
-        "lastModified": 1794378251,
-        "narHash": "sha256-+tWx76PykOrIXbseE4AjzUhVE23nG9UY2B4bry/FDA8=",
+        "lastModified": 1794557256,
+        "narHash": "sha256-S2RUuGNugGfP0dO1Kyhz5iU7TgX0TYDfovuKgNdsqHQ=",
         "owner": "danielbodart",
         "repo": "claude-desktop",
-        "rev": "ba50d1bf33b6f68042fa15f08b2c4cf2334b3b77",
+        "rev": "c9f3133ac670d2727ca2d3c1a0267d7346516223",
         "type": "github"
       },
       "original": {
@@ -96,11 +96,11 @@
         "nixpkgs": "nixpkgs"
       },
       "locked": {
-        "lastModified": 1794400081,
-        "narHash": "sha256-BuQB4OrIPcXCDVvmLBrzk1eH9Aq/oKYe/fnNJFqrRn4=",
+        "lastModified": 1794567267,
+        "narHash": "sha256-rNEpg5aWAPgBPdF1vhhwztYtV7hgzE3fQiby+FZMuCQ=",
         "owner": "NixOS",
         "repo": "nixos-hardware",
-        "rev": "37ba750aba1c1e78c4d2e0c28e1e4fb84c73ef35",
+        "rev": "75206a855c8de3bc71f8b513edf29ca427941c3a",
         "type": "github"
       },
       "original": {
@@ -139,11 +139,11 @@
     },
     "nixpkgs-unstable": {
       "locked": {
-        "lastModified": 1794042290,
-        "narHash": "sha256-ziZn2PvCJE5JEEpqTdxXwJpPB+L3YqoCpTAMCzyaP3U=",
+        "lastModified": 1794386569,
+        "narHash": "sha256-x9sADJvoVG0L6RejZB+/BB4YiGZFBZrfTlhF4uBq1tQ=",
         "owner": "NixOS",
         "repo": "nixpkgs",
-        "rev": "f4a03c008967841f2a0b3cb7c436fc6fc31671f6",
+        "rev": "d4f25a3e562008648d45bcf2d70bcc7422cad84e",
         "type": "github"
       },
       "original": {
@@ -195,11 +195,11 @@
     "private": {
       "flake": false,
       "locked": {
-        "lastModified": 1794228253,
-        "narHash": "sha256-eiZsdkfQhoaiJMipwpedNsus0dXaLS9dsejIbw0kKt4=",
+        "lastModified": 1794576761,
+        "narHash": "sha256-+/7ylATRt//KoNUIc7kbiyvaBnyqdDI05mdjc5mQRCo=",
         "ref": "refs/heads/main",
-        "rev": "ca0cf8672f7c26f0a9d8c47b2e561c94a355af1b",
-        "revCount": 3,
+        "rev": "894305735221e4c0eab13da691ba29274266a164",
+        "revCount": 4,
         "type": "git",
         "url": "ssh://git@github-aenyhm/Aenyhm/aenix-private"
       },
