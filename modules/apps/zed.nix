@@ -5,7 +5,6 @@
   ...
 }:
 let
-  # One Zed theme from one palette, for its dark and light versions
   theme =
     name: appearance: p: with p; {
       inherit name appearance;
@@ -80,8 +79,7 @@ in
         "toml"
         "vue"
       ];
-      # Plain Zed files, so a change made in Zed can be copied back as is.
-      # Zed may still edit its settings.json, these keys are merged into it on each rebuild
+      # Zed also edits settings.json: each rebuild merges these keys into it
       userSettings = builtins.fromJSON (builtins.readFile ./zed/settings.json);
       userKeymaps = builtins.fromJSON (builtins.readFile ./zed/keymap.json);
     };

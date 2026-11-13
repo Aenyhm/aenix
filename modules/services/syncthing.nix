@@ -3,7 +3,6 @@ let
   hm = config.flake.modules.homeManager;
 in
 {
-  # One Syncthing per user, as a user service, so every session syncs its own folders
   flake.modules.nixos.syncthing = {
     networking.firewall = {
       allowedTCPPorts = [ 22000 ];
@@ -18,7 +17,7 @@ in
   flake.modules.homeManager.syncthing = { pkgs, ... }: {
     services.syncthing = {
       enable = true;
-      # Devices and folders are managed in the GUI, a rebuild must not delete them
+      # Devices and folders are set in the GUI, a rebuild keeps them
       overrideDevices = false;
       overrideFolders = false;
       tray = {

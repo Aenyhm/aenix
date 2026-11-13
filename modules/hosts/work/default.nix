@@ -18,8 +18,8 @@ in
       fnouaillat
     ];
     networking.hostName = "fnouaillat-work";
-    # sched-ext scheduler: the desktop stays responsive while a test run loads every core.
-    # --autopower follows the power profile the desktop sets (performance on AC, powersave on battery)
+    # sched-ext scheduler: the desktop stays responsive while tests load every core.
+    # --autopower follows the power profile (performance on AC, powersave on battery)
     services.scx = {
       enable = true;
       scheduler = "scx_lavd";

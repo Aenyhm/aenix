@@ -13,15 +13,14 @@
     {
       home.packages = [ pkgs.crow-translate ];
 
-      # Crow Translate waits in the tray from login, for its global translate shortcuts
+      # For its global shortcuts
       xdg.autostart = {
         enable = true;
         entries = [ "${pkgs.crow-translate}/share/applications/org.kde.CrowTranslate.desktop" ];
       };
 
-      # Only these keys are written, Crow keeps saving the others in the same file. The translation
-      # instance stays out of it, see docs/how-to.md.
-      # Speech through Mozhi (TTS backend 1): the default, Piper, asks at each start for voice models
+      # Writes only these keys, Crow saves the rest in the same file. TTS 1 is Mozhi: Piper, the default,
+      # asks for voice models at each start
       home.activation.crowTranslate = lib.hm.dag.entryAfter [ "writeBoundary" ] ''
         run mkdir -p ${dirOf conf}
         run ${crudini} General StartMinimized true

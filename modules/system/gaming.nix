@@ -5,7 +5,7 @@
     programs.steam = {
       enable = true;
       remotePlay.openFirewall = true;
-      # Proton-GE, offered in each game's compatibility settings and updated with the system
+      # Updated with the system
       extraCompatPackages = [ pkgs.proton-ge-bin ];
     };
     programs.gamescope.enable = true;
@@ -16,15 +16,13 @@
     { pkgs, ... }:
     {
       home.packages = [
-        # Launchers
         pkgs.unstable.faugus-launcher # TODO: back to stable once it has 2.x, 26.05 is still on 1.22
         pkgs.protontricks
 
-        # Games
         pkgs.neverball
       ];
 
-      # Native games on Wayland rather than Xwayland. Session-wide
+      # SDL games run on Wayland rather than Xwayland
       home.sessionVariables.SDL_VIDEO_DRIVER = "wayland";
 
       # cf. https://raw.githubusercontent.com/flightlessmango/MangoHud/master/data/MangoHud.conf

@@ -1,6 +1,5 @@
 {
-  # Music of the Synology NAS, mounted at first access and shared by the users group: every user
-  # finds it in ~/Musique/aenas2. The DSM account is in /etc/nas-credentials, out of the repository
+  # Credentials in /etc/nas-credentials (docs/install.md)
   flake.modules.nixos.nas-music = {
     fileSystems."/mnt/aenas2" = {
       device = "//192.168.1.34/music";

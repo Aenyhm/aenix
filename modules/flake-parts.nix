@@ -35,19 +35,17 @@ let
   };
 in
 {
-  # Declares flake.modules.<class>.<name>, one file can then hold the nixos and homeManager halves of a feature
   imports = [ inputs.flake-parts.flakeModules.modules ];
 
-  # Monospace font of the desktop and Ghostty (Zed names it in apps/zed/settings.json), installed by the base module
+  # Zed sets it separately, in apps/zed/settings.json
   _module.args.monoFont = "JetBrainsMono Nerd Font Mono";
 
   _module.args.paletteDark = paletteDark;
   _module.args.paletteLight = paletteLight;
   _module.args.noHashPaletteDark = builtins.mapAttrs (_: builtins.substring 1 (-1)) paletteDark;
 
-  # .desktop name of the default browser: links, the desktop, taskbar launchers
+  # .desktop name
   _module.args.defaultBrowser = "brave-browser";
 
-  # Emails and name of the work session on the login screen, kept in Aenyhm/aenix-private
   _module.args.private = import "${inputs.private}/private.nix";
 }

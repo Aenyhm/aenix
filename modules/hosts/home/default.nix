@@ -33,25 +33,24 @@ in
     hardware.nvidia = {
       open = true; # required for modern GPUs
       powerManagement.enable = true;
-      # Newest driver rather than the production branch: fixes and gains for recent games
+      # Latest driver, not production: fixes for recent games
       package = config.boot.kernelPackages.nvidiaPackages.latest;
     };
-    # Fan and pump speeds of the motherboard (NCT6798 chip), not loaded on its own
+    # Motherboard fan and pump sensors (NCT6798), not loaded automatically
     boot.kernelModules = [ "nct6775" ];
     # sched-ext scheduler, as on CachyOS: games keep the CPU when other programs load it
     services.scx = {
       enable = true;
       scheduler = "scx_lavd";
     };
-    # Windows dual boot
     time.hardwareClockInLocalTime = true; # Windows keeps the RTC in local time
     boot.loader.grub.useOSProber = true;
 
-    # Backup work session, without the company agents that would monitor the whole machine.
-    # Its name on the login screen only, git reads aenix.users
+    # Backup work session, without the company agents, which would monitor the whole machine.
+    # Sets only the login screen name; git reads aenix.users
     users.users.fnouaillat.description = lib.mkForce private.workName;
 
-    # Both sessions can be open at once, the second Syncthing needs its own ports
+    # Both sessions can run at once, so this Syncthing needs other ports
     home-manager.users.fnouaillat.services.syncthing = {
       guiAddress = "127.0.0.1:8385";
       settings.options.listenAddresses = [
@@ -64,7 +63,7 @@ in
       allowedTCPPorts = [ 22001 ];
       allowedUDPPorts = [ 22001 ];
     };
-    # The file manager shows a USB-connected iPhone (photos, app files) once it trusts this computer
+    # Lets the file manager open a USB iPhone once it trusts this computer
     services.usbmuxd.enable = true;
   };
 

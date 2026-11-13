@@ -4,11 +4,9 @@
       "nix-command"
       "flakes"
     ];
-    # Replaces identical files in the store with hard links
     nix.optimise.automatic = true;
 
-    # nh wraps nixos-rebuild and lists the package changes before switching. Its cleaner also
-    # removes old home-manager generations, which nix.gc keeps
+    # nh's cleaner also removes old home-manager generations, which nix.gc keeps
     programs.nh = {
       enable = true;
       clean = {

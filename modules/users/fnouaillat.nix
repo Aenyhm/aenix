@@ -9,7 +9,6 @@ let
   hm = config.flake.modules.homeManager;
 in
 {
-  # fnouaillat, the work user, on work and as a backup session on home
   flake.modules.nixos.fnouaillat = {
     aenix.users.fnouaillat = {
       fullName = "Fabien Nouaillat";
@@ -37,11 +36,11 @@ in
       ...
     }:
     {
-      # The default key is the work account's, the personal one sits beside it
+      # The default key is the work one, the personal one sits beside it
       programs.ssh.settings.github-aenyhm.identityFile = "~/.ssh/id_ed25519_aenyhm";
 
       home.packages = with pkgs; [
-        # Official .deb, repackaged. Without Cowork, the agent that works in a QEMU virtual machine
+        # Official .deb, repackaged, without Cowork (an agent in a QEMU VM)
         (callPackage "${inputs.claude-desktop}/package.nix" { withCowork = false; })
         awscli2
         dbeaver-bin
@@ -55,8 +54,8 @@ in
         uv
       ];
 
-      # pgAdmin, for its graphical EXPLAIN and its completion: its server runs in the background
-      # on 127.0.0.1:5050, and its launcher opens it in a Brave window without tabs or address bar
+      # pgAdmin, for its graphical EXPLAIN and completion. Its server runs on 127.0.0.1:5050, and its
+      # launcher opens it in a Brave app window
       systemd.user.services.pgadmin = {
         Unit.Description = "pgAdmin";
         Service.ExecStart = "${pkgs.pgadmin4-desktopmode}/bin/pgadmin4";
@@ -83,7 +82,6 @@ in
       # Claude in Chrome, the extension Claude Code drives the browser with
       programs.brave.extensions = [ { id = "fcoeoabgfenejglbffodgkkbkcdhcgfn"; } ];
 
-      # Work scripts and aliases
       home.sessionPath = [ "$HOME/sync/work/scripts" ];
       home.sessionVariables.PYTHONDONTWRITEBYTECODE = "1";
       programs.bash.initExtra = ''

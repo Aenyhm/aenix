@@ -8,7 +8,6 @@
       ...
     }:
     {
-      # The users of the host, each with the home-manager modules of its profile
       options.aenix.users = lib.mkOption {
         type = lib.types.attrsOf (
           lib.types.submodule {
@@ -79,15 +78,12 @@
           settings.General.Experimental = true;
         };
 
-        # One SSH agent per session, ~/.ssh keys are added at first use (modules/apps/ssh.nix)
         programs.ssh.startAgent = true;
 
-        # Firmware and BIOS updates published by the vendor, installed by `update`
         services.fwupd.enable = true;
 
-        # Binaries built for other distributions (Pythons from uv, native wheels, vite-plus, Claude Code,
-        # language servers downloaded by Zed, Playwright browsers) look for the loader and libraries
-        # in fixed paths. nix-ld answers there, with the library set NixOS uses to run AppImages.
+        # Binaries built for other distributions, such as uv's Pythons or native wheels, expect the loader
+        # and libraries at fixed paths. nix-ld serves them there, with the AppImage library set
         programs.nix-ld = {
           enable = true;
           libraries = with pkgs.appimageTools.defaultFhsEnvArgs; targetPkgs pkgs ++ multiPkgs pkgs;
@@ -95,7 +91,7 @@
         # Scripts starting with #!/bin/bash or calling /usr/bin/<tool> find the tool through the PATH
         services.envfs.enable = true;
 
-        # Electron apps (Slack, Spotify, Obsidian) run natively on Wayland, sharp under fractional scaling
+        # Electron apps run natively on Wayland, sharp under fractional scaling
         environment.sessionVariables.NIXOS_OZONE_WL = "1";
       };
     };

@@ -6,7 +6,7 @@
   ...
 }:
 let
-  # ANSI black and white follow the background: black is the dark end of the theme, white the light one
+  # ANSI black is the theme's dark end and white its light end, whatever the background
   theme =
     p: black: white: with p; {
       background = bg;
@@ -41,7 +41,6 @@ in
     programs.ghostty = {
       enable = true;
 
-      # Ghostty follows the desktop's light or dark mode
       themes = {
         aetheme-dark = theme paletteDark paletteDark.selection paletteDark.fg;
         aetheme-light = theme paletteLight paletteLight.fg paletteLight.selection;

@@ -2,7 +2,6 @@
   flake.modules.homeManager.apps =
     { pkgs, ... }:
     {
-      # Default flake of nh, so `nh os switch` works from any directory
       home.sessionVariables.NH_FLAKE = "$HOME/aenix";
 
       home.packages = [

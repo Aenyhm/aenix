@@ -2,68 +2,68 @@
 
 ## Update the machine
 
-nh and `nixos-rebuild --sudo` build as your user, whose SSH key fetches the private repository, then activate as root.
+nh and `nixos-rebuild --sudo` build as your user, whose SSH key fetches the private repository, and activate as root.
 
 | Task | Command |
 |---|---|
 | Apply a config change | `nh os switch`, which lists the package changes first. On the Mac, `nh darwin switch`, which also upgrades the Homebrew apps and uninstalls those not in `homebrew.casks`: add apps there, not with `brew install` |
-| Update everything | `update`: flake inputs, system, then firmware and BIOS. Commit the new `flake.lock` afterwards |
-| Try a change without keeping it at boot | `nh os test` |
-| Undo a broken update | pick the previous generation in the GRUB menu, or `nixos-rebuild switch --rollback --sudo`, then `git checkout flake.lock` |
+| Update everything | `update`: flake inputs, system, then firmware and BIOS. Commit the new `flake.lock` |
+| Try a change until the next boot | `nh os test` |
+| Undo a broken update | boot the previous generation from GRUB, or `nixos-rebuild switch --rollback --sudo`, then `git checkout flake.lock` |
 | Format the Nix files | `treefmt` |
 
 ## Find where a value lives
 
-The README maps each directory. What the tree does not tell:
+The README maps the directories. Beyond that:
 
 | Value | Where |
 |---|---|
 | Private values and what only the work host runs | `Aenyhm/aenix-private`, then `nix flake update private` |
 | `.desktop` names, for the launchers and the default applications | `ls /run/current-system/sw/share/applications ~/.nix-profile/share/applications` |
-| Packages taken from unstable, with the condition to return to stable | `grep -rn TODO modules` |
+| Packages from unstable, and when to move them back to stable | `grep -rn TODO modules` |
 
 ## Change a KDE setting
 
-A setting declared in `modules/system/kde.nix` is written back at each rebuild, the others stay as set from the KDE interface. Try a setting by hand first, declare it to keep it across reinstalls. `nix run github:nix-community/plasma-manager` prints the current KDE settings in Nix, ready to copy into `programs.plasma.configFile`.
+Each rebuild rewrites the settings declared in `modules/system/kde.nix`; the others keep what the KDE interface set. Try a setting by hand, then declare it to keep it across reinstalls. `nix run github:nix-community/plasma-manager` prints the current KDE settings as Nix, ready for `programs.plasma.configFile`.
 
-The login screen runs its own KWin, on the monitor's preferred mode, and the monitor goes black at login while it switches to the mode of the session. After the first login and after each change of the display settings, give the login screen the session's ones: System Settings, Colours & Themes, Login Screen (SDDM), "Apply Plasma Settings". The copy lands in `/var/lib/sddm/.config` and survives rebuilds.
+The login screen runs its own KWin in the monitor's preferred mode, so the screen goes black at login while switching to the session's mode. After the first login and each display change, copy the session's settings to it: System Settings > Colours & Themes > Login Screen (SDDM) > "Apply Plasma Settings". The copy is stored in `/var/lib/sddm/.config` and survives rebuilds.
 
-The panel is rebuilt from scratch each time its declaration changes. The wallpaper chosen in KDE lives in the same file as the panel, so two startup scripts of `kde.nix` save it at each login and set it again when the rebuild lost it.
+A change to the panel's declaration rebuilds it from scratch, and erases the wallpaper stored in the same file. Two startup scripts in `kde.nix` save the wallpaper at each login and restore it.
 
 ## Sync the work files
 
-The work files go from device to device through Syncthing, so nothing of the company reaches GitHub. One `work` folder on the NAS is shared with the work session of each host, at `~/sync/work`.
+Work files move between devices through Syncthing, so nothing of the company reaches GitHub. A `work` folder on the NAS is shared with the work session of each host, at `~/sync/work`.
 
 | Inside `~/sync/work` | Content |
 |---|---|
 | `notes/` | work notes |
-| `scripts/` | scripts and aliases, which the work profile puts in the PATH and loads in bash |
+| `scripts/` | scripts and aliases, in the PATH and loaded by bash in the work profile |
 | `claude-config/` | the Claude Code config. The work profile links `~/.claude` to it |
-| `env/` | the secrets of the repositories and of the cloud tools, linked from where they are read |
+| `env/` | secrets of the repositories and cloud tools, linked from where they are read |
 
-Claude Code also keeps its history, sessions and cache in `~/.claude`, and those belong to each machine, The ignore rules that keep them there are in `.stglobalignore`, a synced file at the root of the folder. Syncthing never transfers a `.stignore`, so on each device, **before** adding the folder, create `~/sync/work/.stignore` holding the single line `#include .stglobalignore`. On the NAS, the Exclusions tab of the interface holds that line.
+Claude Code also keeps its history, sessions and cache in `~/.claude`, which stay on each machine. The synced file `.stglobalignore` excludes them. Syncthing never syncs a `.stignore`, so on each device, **before** adding the folder, create `~/sync/work/.stignore` with the single line `#include .stglobalignore`. On the NAS, put that line in the Exclusions tab.
 
-The link goes from `~/.claude` to the synced folder and not the other way round: Syncthing copies a link as a link, without what it points to.
+The link goes from `~/.claude` to the synced folder, not the reverse: Syncthing copies a link as a link, without its target.
 
 ## When something fails
 
 | Symptom | Fix |
 |---|---|
-| A binary built for another distribution fails with "No such file or directory" although it exists | it looks for the loader and libraries at the standard Linux paths, which nix-ld answers in `modules/system/base.nix`. A library still missing goes into `programs.nix-ld.libraries` |
-| A script starting with `#!/bin/bash` or calling `/usr/bin/<tool>` fails | envfs serves those paths from the PATH, so the tool is missing from it: install it |
-| GitHub refuses a clone or a push as the wrong user | the account comes from the key: company repositories go through `github.com`, personal ones through the `github-aenyhm` alias (`modules/apps/ssh.nix`), so set the remote to `git@github-aenyhm:Aenyhm/<repo>` |
-| Crow Translate gives an instance error (HTTP 429) | the Mozhi instance that relays the translations to Google is rate limited: Paramètres > Mozhi > URL > Détecter plus rapidement picks a working one |
+| A binary built for another distribution fails with "No such file or directory" although it exists | it expects the loader and libraries at standard Linux paths, served by nix-ld in `modules/system/base.nix`. Add a missing library to `programs.nix-ld.libraries` |
+| A script starting with `#!/bin/bash` or calling `/usr/bin/<tool>` fails | envfs serves those paths from the PATH: the tool is not installed |
+| GitHub refuses a clone or a push as the wrong user | the key sets the account: company repositories use `github.com`, personal ones the `github-aenyhm` alias (`modules/apps/ssh.nix`). Set the remote to `git@github-aenyhm:Aenyhm/<repo>` |
+| Crow Translate gives an instance error (HTTP 429) | the Mozhi instance relaying to Google is rate limited: Paramètres > Mozhi > URL > Détecter plus rapidement picks a working one |
 | The Syncthing tray shows nothing | configure it from its GUI, then `rm ~/.config/syncthingtray.ini` and `systemctl --user restart syncthingtray` |
 
 ## Upgrade NixOS
 
-A NixOS release comes out every six months. Two version numbers are involved, and only one of them moves.
+NixOS releases every six months. Two versions are involved, and only one moves.
 
 | Value | Where | Meaning | When it changes |
 |---|---|---|---|
-| nixpkgs release | `flake.nix`, the `nixpkgs` and `home-manager` URLs | the software every host runs | at each upgrade, the two URLs together, since flake inputs accept literal strings only |
-| `system.stateVersion` | `modules/hosts/<host>/default.nix` | the release whose defaults created the data of this host: data paths, database formats | never |
+| nixpkgs release | `flake.nix`, the `nixpkgs` and `home-manager` URLs | the software every host runs | at each upgrade, both URLs, since flake inputs only take literal strings |
+| `system.stateVersion` | `modules/hosts/<host>/default.nix` | the release whose defaults created the host's data: paths, database formats | never |
 
-To upgrade, change the release in both URLs, run `update`, then return to stable the unstable packages whose `TODO` condition is met.
+To upgrade, change the release in both URLs, run `update`, then move back to stable the unstable packages whose `TODO` condition is met.
 
-`stateVersion` is per host, so two hosts installed under different releases run the same nixpkgs from the same flake. Raising it on an installed host switches its services to the defaults of the newer release, and the data created under the old defaults is no longer found where the service looks. home-manager reads the same value for the per-user state.
+Raising `stateVersion` on an installed host switches its services to newer defaults, and they no longer find their data.

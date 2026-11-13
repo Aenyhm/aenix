@@ -8,8 +8,7 @@ let
   inherit (config.flake.modules) darwin homeManager;
 in
 {
-  # The personal Mac under nix-darwin. Shared with a second account that Nix leaves
-  # alone: it only gets the shared apps, installed by Homebrew in /Applications
+  # Nix leaves the second account alone: it only gets the shared apps
   flake.modules.darwin.host-mac =
     {
       config,
@@ -22,9 +21,8 @@ in
 
       nixpkgs.hostPlatform = "aarch64-darwin";
       networking.hostName = "aenyhm-mac";
-      # Never change it, as system.stateVersion on NixOS
+      # Never change it, same rule as on NixOS
       system.stateVersion = 7;
-      # The user that Homebrew and the per-user macOS settings belong to
       system.primaryUser = "fabien";
 
       nix.settings.experimental-features = [
@@ -35,15 +33,14 @@ in
         pkgs.bashInteractive
         pkgs.nh
       ];
-      # brew, after the Nix tools so a package of both runs the Nix one
+      # brew after Nix in the PATH: Nix wins when both provide a command
       environment.systemPath = lib.mkAfter [ "${config.homebrew.prefix}/bin" ];
       # Allowed as login shell, set once with chsh (docs/install.md)
       environment.shells = [ pkgs.bashInteractive ];
-      # Where nh finds the flake, as on Linux (apps/update.nix)
       environment.variables.NH_FLAKE = "/Users/fabien/aenix";
       fonts.packages = [ pkgs.nerd-fonts.jetbrains-mono ];
 
-      # Signed apps that update themselves. Homebrew is installed by hand (docs/install.md)
+      # Homebrew is installed by hand (docs/install.md)
       homebrew = {
         enable = true;
         # Uninstalls the casks not listed here. The upgrade skips those that update themselves
@@ -100,22 +97,22 @@ in
             name = "Aenyhm";
             email = private.emails.aenyhm;
           };
-          # GNU ls, coloured as on Linux, where NixOS sets the alias and the colours
+          # GNU ls, for the colours
           home.packages = [ pkgs.coreutils ];
           programs.bash.shellAliases.ls = "ls --color=tty";
           programs.bash.initExtra = ''eval "$(dircolors -b)"'';
           # The apps come from Homebrew, Nix only writes their config
           programs.ghostty.package = null;
-          # macOS counts a point as one pixel where Linux counts 4/3: 16 matches Zed, as 12 does on Linux
+          # A macOS point is 1 px, a Linux one 4/3 px: 16 here matches Zed, like 12 on Linux
           programs.ghostty.settings.font-size = lib.mkForce 16;
           programs.ghostty.settings = {
-            # Downloads the updates and installs them at the next start, without asking first
+            # Downloads updates and installs them at the next start, without asking
             auto-update = "download";
           };
-          # The tray runs as a systemd service, Linux only: the GUI stays at 127.0.0.1:8384
+          # The tray is a systemd service, Linux only. GUI at 127.0.0.1:8384
           services.syncthing.tray.enable = lib.mkForce false;
           programs.zed-editor.package = null;
-          # Homebrew leaves the Zed upgrades to Zed itself
+          # Zed updates itself, the Homebrew upgrade skips it
           programs.zed-editor.userSettings.auto_update = lib.mkForce true;
         };
       };

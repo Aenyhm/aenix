@@ -2,7 +2,7 @@
 {
   flake.modules.homeManager.apps.imports = [ config.flake.modules.homeManager.git ];
 
-  # user.name and user.email come from the host: aenix.users on NixOS, the mac host on macOS
+  # user.name and user.email are set per host: aenix.users on NixOS, host-mac on macOS
   flake.modules.homeManager.git = {
     programs.gh.enable = true; # also the git credential helper for github.com
     programs.git = {
@@ -21,7 +21,6 @@
         };
         push.autoSetupRemote = true;
         fetch.prune = true;
-        # After a force push, only the local commits made since are replayed on the new remote
         pull.rebase = true;
       };
     };

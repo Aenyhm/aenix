@@ -1,15 +1,12 @@
 {
-  # Policies apply to every Brave on the host (/etc/brave/policies), the extensions to each user
   flake.modules.nixos.base = {
     programs.chromium = {
       enable = true;
       extraOpts = {
-        # Telemetry
         MetricsReportingEnabled = false;
         BraveP3AEnabled = false;
         BraveStatsPingEnabled = false;
         BraveWebDiscoveryEnabled = false;
-        # Brave products not used
         BraveRewardsDisabled = true;
         BraveWalletDisabled = true;
         BraveVPNDisabled = true;
@@ -23,7 +20,7 @@
         AutofillAddressEnabled = false;
         AutofillCreditCardEnabled = false;
         DefaultBrowserSettingEnabled = false;
-        # DuckDuckGo, locked in the settings by the policy
+        # Locked: the settings can no longer change it
         DefaultSearchProviderEnabled = true;
         DefaultSearchProviderName = "DuckDuckGo";
         DefaultSearchProviderKeyword = "duckduckgo.com";
@@ -36,8 +33,6 @@
   flake.modules.homeManager.apps = {
     programs.brave = {
       enable = true;
-      # Installed at first start from the Chrome Web Store, then updated by Brave. The desktop module
-      # adds its own integration
       extensions = [
         { id = "nngceckbapebfimnlniiiahkandclblb"; } # Bitwarden
         { id = "khncfooichmfjbepaaaebmommgaepoid"; } # Unhook, no YouTube recommendations

@@ -6,7 +6,7 @@
         enable = true;
         languagePacks = [ "fr" ];
 
-        # Policies first: one documented switch instead of the prefs behind it. Prefs for the rest
+        # Policies where one exists, prefs for the rest
         policies = {
           DisableTelemetry = true;
           DisableFirefoxStudies = true;
@@ -36,7 +36,6 @@
           };
           NetworkPrediction = false;
 
-          # New tab, address bar and prompts without sponsored content or suggestions
           FirefoxHome = {
             Search = false;
             SponsoredTopSites = false;
@@ -58,7 +57,6 @@
             FirefoxLabs = false;
           };
 
-          # Installed at first start, then updated by Firefox. The desktop module adds its own integration
           ExtensionSettings =
             builtins.mapAttrs
               (_: slug: {
@@ -75,7 +73,7 @@
               };
         };
 
-        # force: Firefox keeps its engines in a binary file, rewritten whole at each switch
+        # force: the engines file is binary, so each switch rewrites it whole
         profiles.default.search = {
           default = "ddg";
           privateDefault = "ddg";
@@ -83,7 +81,6 @@
         };
 
         profiles.default.settings = {
-          # Startup and interface
           "intl.locale.requested" = "fr,en-US"; # the language pack alone leaves the interface in English
           "browser.startup.page" = 3; # restore the previous session
           "browser.aboutConfig.showWarning" = false;
@@ -95,17 +92,14 @@
           "browser.newtabpage.activity-stream.hideLogo" = true;
           "browser.newtabpage.activity-stream.showWeather" = false;
 
-          # Downloads: ask where to save, and what to do with a new file type
           "browser.download.useDownloadDir" = false;
           "browser.download.always_ask_before_handling_new_types" = true;
 
-          # Privacy without a policy: Global Privacy Control, no containers, no speculative connections
           "privacy.globalprivacycontrol.enabled" = true;
           "privacy.userContext.enabled" = false;
           "network.http.speculative-parallel-limit" = 0;
           "media.eme.enabled" = true; # DRM, for streaming sites
 
-          # Developer tools
           "devtools.theme" = "dark";
           "devtools.cache.disabled" = true;
         };

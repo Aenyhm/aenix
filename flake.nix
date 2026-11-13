@@ -2,32 +2,28 @@
   description = "AeNix";
 
   inputs = {
-    # The NixOS release: change nixpkgs and home-manager together (docs/how-to.md)
+    # Change together with the home-manager release (docs/how-to.md)
     nixpkgs.url = "github:NixOS/nixpkgs/nixos-26.05";
     nixpkgs-unstable.url = "github:NixOS/nixpkgs/nixos-unstable";
     home-manager = {
       url = "github:nix-community/home-manager/release-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
-    # The Mac, without NixOS: same release as nixpkgs
     nix-darwin = {
       url = "github:nix-darwin/nix-darwin/nix-darwin-26.05";
       inputs.nixpkgs.follows = "nixpkgs";
     };
 
-    # Structure: every file under modules/ is a flake-parts module
     flake-parts.url = "github:hercules-ci/flake-parts";
     import-tree.url = "github:vic/import-tree";
 
-    # Private values and the modules of the work laptop, fetched over SSH with the personal key
-    # of the github-aenyhm alias (modules/apps/ssh.nix)
+    # Fetched over SSH through the github-aenyhm alias
     private = {
       url = "git+ssh://git@github-aenyhm/Aenyhm/aenix-private";
       flake = false;
     };
 
-    # Packages and modules from outside nixpkgs
-    # Source only: its own flake builds Cowork's QEMU with options missing from stable nixpkgs
+    # Source only: its flake builds Cowork's QEMU, which is disabled
     claude-desktop = {
       url = "github:danielbodart/claude-desktop";
       flake = false;

@@ -8,7 +8,6 @@ let
   hm = config.flake.modules.homeManager;
 in
 {
-  # aenyhm, the personal user, on home
   flake.modules.nixos.aenyhm = {
     aenix.users.aenyhm = {
       fullName = "Aenyhm";
@@ -34,19 +33,16 @@ in
 
   flake.modules.homeManager.aenyhm = { pkgs, ... }: {
     home.packages = with pkgs; [
-      # Communications
-      signal-desktop
+      audacity
       element-desktop
       mumble
-
-      # Audio
-      audacity
+      signal-desktop
       soundconverter
     ];
 
     programs.zed-editor.extensions = [
-      "odin"
       "c3"
+      "odin"
     ];
   };
 }

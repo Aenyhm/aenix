@@ -8,8 +8,6 @@ let
   hm = config.flake.modules.homeManager;
 in
 {
-  # Plasma on Wayland with the SDDM login screen, the KDE apps, and what KDE adds to the other
-  # apps (browsers, file manager in the launchers): dropping this import drops KDE
   flake.modules.nixos.kde = { pkgs, ... }: {
     services.displayManager.sddm = {
       enable = true;
@@ -57,7 +55,7 @@ in
       ...
     }:
     let
-      # Pie chart refreshed every 3 seconds, the default 0.5s is too busy. No sensor colour, Plasma picks one
+      # Pie chart refreshed every 3 s, the default 0.5 s is too busy. Plasma picks the colour
       monitor = title: sensor: {
         systemMonitor = {
           inherit title;
@@ -89,8 +87,8 @@ in
 
       programs.plasma = {
         enable = true;
-        # A changed panel makes plasma-manager delete the file holding the wallpaper (priority 2).
-        # The wallpaper chosen in KDE is saved before at each login, and set again after if lost
+        # plasma-manager deletes the wallpaper's file when the panel changes (priority 2). This saves
+        # the wallpaper at each login, before that, and restores it after if lost
         startup.startupScript.wallpaper_save = {
           priority = 1;
           runAlways = true;
@@ -137,7 +135,7 @@ in
         panels = [
           {
             location = "right";
-            height = 44; # 44 by default
+            height = 44;
             floating = false;
             widgets = [
               "org.kde.plasma.kickoff"
