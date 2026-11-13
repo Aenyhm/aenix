@@ -16,6 +16,7 @@
   flake.modules.homeManager.cli = { pkgs, ... }: {
     home.packages = with pkgs; [
       curl
+      ffmpeg
       jq
       tree
       wget
