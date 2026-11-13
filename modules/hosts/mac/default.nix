@@ -46,6 +46,12 @@ in
       # Signed apps that update themselves. Homebrew is installed by hand (docs/install.md)
       homebrew = {
         enable = true;
+        # Uninstalls the casks not listed here. The upgrade skips those that update themselves
+        onActivation = {
+          autoUpdate = true;
+          upgrade = true;
+          cleanup = "uninstall";
+        };
         casks =
           # For both accounts, in /Applications
           [
