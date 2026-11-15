@@ -1,4 +1,9 @@
-{ config, defaultBrowser, ... }:
+{
+  config,
+  defaultBrowser,
+  inputs,
+  ...
+}:
 {
   # ~/.config/mimeapps.list overrides these, and stays writable for apps that register links
   flake.modules.nixos.base.xdg.mime.defaultApplications = {
@@ -14,6 +19,10 @@
   };
 
   flake.modules.homeManager.cli = { pkgs, ... }: {
+    # `, <command>` runs a command without installing it, `command not found` names its package
+    imports = [ inputs.nix-index-database.homeModules.nix-index ];
+    programs.nix-index-database.comma.enable = true;
+
     home.packages = with pkgs; [
       curl
       ffmpeg
@@ -26,7 +35,15 @@
       nixfmt
       nixfmt-tree # provides treefmt
       nixd # LSP for Zed
+
+      devenv # per-project toolchains at fixed versions, loaded by direnv on cd
+      uv
     ];
+
+    programs.direnv = {
+      enable = true;
+      nix-direnv.enable = true;
+    };
 
     programs.htop.enable = true;
   };

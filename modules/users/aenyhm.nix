@@ -38,6 +38,7 @@ in
       mumble
       signal-desktop
       soundconverter
+      wineWow64Packages.stable # runs the Windows builds of the games
     ];
 
     programs.zed-editor.extensions = [

@@ -12,7 +12,7 @@
       clean = {
         enable = true;
         dates = "weekly";
-        extraArgs = "--keep-since 15d --keep 10";
+        extraArgs = "--keep-since 15d --keep 10 --no-direnv"; # keeps the project environments
       };
     };
   };

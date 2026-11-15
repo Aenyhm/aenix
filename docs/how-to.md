@@ -11,6 +11,7 @@ nh and `nixos-rebuild --sudo` build as your user, whose SSH key fetches the priv
 | Try a change until the next boot | `nh os test` |
 | Undo a broken update | boot the previous generation from GRUB, or `nixos-rebuild switch --rollback --sudo`, then `git checkout flake.lock` |
 | Format the Nix files | `treefmt` |
+| Use a tool without installing it | `, <command>` (comma) |
 
 ## Find where a value lives
 

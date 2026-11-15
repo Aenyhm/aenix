@@ -44,7 +44,6 @@ in
         (callPackage "${inputs.claude-desktop}/package.nix" { withCowork = false; })
         awscli2
         dbeaver-bin
-        delve
         go
         opentofu
         postgresql
@@ -52,7 +51,6 @@ in
         slack
         ssm-session-manager-plugin # aws ssm start-session, used by the bastion tunnel
         terragrunt
-        uv
       ];
 
       # pgAdmin, for its graphical EXPLAIN and completion. Its server runs on 127.0.0.1:5050, and its
