@@ -57,31 +57,51 @@ in
 {
   flake.modules.homeManager.apps.imports = [ config.flake.modules.homeManager.zed ];
 
-  flake.modules.homeManager.zed = {
-    programs.zed-editor = {
-      enable = true;
-      themes.aetheme = {
-        "$schema" = "https://zed.dev/schema/themes/v0.1.0.json";
-        name = "AeTheme";
-        author = "Aenyhm";
-        themes = [
-          (theme "AeTheme Dark" "dark" paletteDark)
-          (theme "AeTheme Light" "light" paletteLight)
+  flake.modules.homeManager.zed =
+    {
+      config,
+      lib,
+      osConfig,
+      pkgs,
+      ...
+    }:
+    let
+      # nixd completes and documents the options of this host's config, aenix's own included
+      host =
+        ''(builtins.getFlake "${config.home.homeDirectory}/aenix").''
+        + (if pkgs.stdenv.isDarwin then "darwin" else "nixos")
+        + ''Configurations."${osConfig.networking.hostName}"'';
+    in
+    {
+      programs.zed-editor = {
+        enable = true;
+        themes.aetheme = {
+          "$schema" = "https://zed.dev/schema/themes/v0.1.0.json";
+          name = "AeTheme";
+          author = "Aenyhm";
+          themes = [
+            (theme "AeTheme Dark" "dark" paletteDark)
+            (theme "AeTheme Light" "light" paletteLight)
+          ];
+        };
+        extensions = [
+          "git-firefly"
+          "html"
+          "make"
+          "nix"
+          "sql"
+          "terraform"
+          "toml"
+          "vue"
         ];
+        # Zed also edits settings.json: each rebuild merges these keys into it
+        userSettings = lib.recursiveUpdate (builtins.fromJSON (builtins.readFile ./zed/settings.json)) {
+          lsp.nixd.settings.options = {
+            system.expr = "${host}.options";
+            home-manager.expr = "${host}.options.home-manager.users.type.getSubOptions []";
+          };
+        };
+        userKeymaps = builtins.fromJSON (builtins.readFile ./zed/keymap.json);
       };
-      extensions = [
-        "git-firefly"
-        "html"
-        "make"
-        "nix"
-        "sql"
-        "terraform"
-        "toml"
-        "vue"
-      ];
-      # Zed also edits settings.json: each rebuild merges these keys into it
-      userSettings = builtins.fromJSON (builtins.readFile ./zed/settings.json);
-      userKeymaps = builtins.fromJSON (builtins.readFile ./zed/keymap.json);
     };
-  };
 }
