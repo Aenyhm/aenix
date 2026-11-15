@@ -23,6 +23,8 @@ ssh -T git@github-aenyhm
 
 ### Partitions and swap
 
+TODO at the next install: describe the disks with disko (partitions, LUKS, swap, subvolumes) and install from it, which replaces this section and the hardware config copy of step 4. Never on an installed machine: its partitions do not carry the labels disko expects, and it would no longer boot.
+
 Swap size and encryption can only be set at install. Use Btrfs with the `home` and `nix` subvolumes. On a work machine, tick disk encryption: the company policy requires it, and it covers the swap.
 
 | RAM | Swap |
