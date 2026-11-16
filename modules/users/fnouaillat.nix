@@ -57,7 +57,10 @@ in
       # launcher opens it in a Brave app window
       systemd.user.services.pgadmin = {
         Unit.Description = "pgAdmin";
-        Service.ExecStart = "${pkgs.pgadmin4-desktopmode}/bin/pgadmin4";
+        # The 9.14 test suite fails on its reverse-engineered SQL test, so Hydra has no build either
+        Service.ExecStart = "${
+          pkgs.pgadmin4-desktopmode.overridePythonAttrs { doCheck = false; }
+        }/bin/pgadmin4";
         Install.WantedBy = [ "default.target" ];
       };
       xdg.desktopEntries.pgadmin = {
