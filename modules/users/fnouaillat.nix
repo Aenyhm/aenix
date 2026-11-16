@@ -44,6 +44,7 @@ in
         (callPackage "${inputs.claude-desktop}/package.nix" { withCowork = false; })
         awscli2
         dbeaver-bin
+        dbmate
         go
         opentofu
         postgresql
