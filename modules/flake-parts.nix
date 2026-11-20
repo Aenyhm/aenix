@@ -18,12 +18,13 @@ let
     cyan = "#8dc2aa";
   };
   paletteLight = {
-    bg = "#f8f6f4";
-    line = "#ece9e4";
+    # A sand ground rather than white, the artifacts' card surface
+    bg = "#f0e9db";
+    line = "#e5ddce";
     selection = "#d8d0c3";
     highlight = "#e1d3b3";
     gutter = "#97918a";
-    comment = "#71675d";
+    comment = "#645d55";
     fg = "#2c251f";
     yellow = "#7d5e00";
     green = "#586d03";
